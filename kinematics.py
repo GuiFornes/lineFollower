@@ -1,4 +1,6 @@
 from constants import *
+import utils
+import numpy as np
 
 
 def direct_kinematics(rotSpeedL, rotSpeedR):
@@ -14,11 +16,10 @@ def direct_kinematics(rotSpeedL, rotSpeedR):
     elif speedL == -speedR:
         return 0, speedL / L
     else:
-        rot_center = L * (speedL + speedR) / (2 * (speedR - speedL))
         return (speedL + speedR) / 2, (speedR - speedL) / L
 
 
-def odometry(linear, angular, t):
+def odom(linear, angular, t):
     """
     This function calculates the variation of position of the robot
     :param linear: linear velocity (m/s)
@@ -26,7 +27,10 @@ def odometry(linear, angular, t):
     :param t: time (s)
     :return: dx, dy, dtheta (m, m, rad)
     """
-    pass
+    dx = linear * t * np.cos(angular * t)
+    dy = linear * t * np.sin(angular * t)
+    dtheta = angular * t
+    return dx, dy, dtheta
 
 
 def tick_odom(x, y, theta, linear, angular, t):
@@ -38,9 +42,10 @@ def tick_odom(x, y, theta, linear, angular, t):
     :param linear: linear velocity (m/s)
     :param angular: angular velocity (rad/s)
     :param t: time (s)
-    :return: dx, dy, dtheta (m, m, rad)
+    :return: new_x, new_y, new_theta (m, m, rad)
     """
-    pass
+    dx, dy, dtheta = odom(linear, angular, t)
+    return x + dx, y + dy, theta + dtheta
 
 
 def inverse_kinematics(linear, angular):
@@ -50,7 +55,7 @@ def inverse_kinematics(linear, angular):
     :param angular: angular velocity (rad/s)
     :return: left wheel speed, right wheel speed (rad/s)
     """
-    pass
+
 
 
 def go_to_xya(x, y, theta):
