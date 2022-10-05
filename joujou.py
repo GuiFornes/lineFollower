@@ -2,7 +2,8 @@ import pypot.dynamixel as dm
 import pybullet as p
 import time
 
-physicsClient = p.connect(p.GUI)
+import os
+os.environ['DISPLAY'] = ':0'
 
 ports = dm.get_available_ports()
 if not ports:
