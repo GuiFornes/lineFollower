@@ -12,52 +12,34 @@ class Vision:
             print("[ERROR] Camera not found")
             print(e)
             exit(1)
-        self.frame = cv2.imread("frame.png")  # For testing
+        self.frame = None  # cv2.imread("frame.png")  # For testing
         self.filtered_frame = None
-        self.range = [400, 300, 200]
-        self.objectives = np.array([[0, 0], [0, 0], [0, 0]])
+        self.goal = np.array([0, 0])
 
-    def update(self, color=BLUE):
+    def update(self, color=GREEN):
         self.__filter(color)
-        ret, goals = self.__get_objectives()  # in pixels
-        if ret:
-            goals = [kinematics.pixel_to_robot(*goal) for goal in goals]  # in meters, robot reference frame
-        return ret, goals
+        return self.__get_objectives()  # in pixels
 
-    def __filter(self, color=BLUE):
+    def __filter(self, color=GREEN):
         ret, self.frame = self.cam.read()
-        gray = cv2.cvtColor(self.frame, cv2.COLOR_BGR2GRAY)
-        gray = cv2.GaussianBlur(gray, (9, 9), 0)
-        mask = cv2.inRange(self.frame, COLOR_BOUND[color][0], COLOR_BOUND[color][1])
+        hsv = cv2.cvtColor(self.frame, cv2.COLOR_BGR2HSV)
+        hsv = cv2.GaussianBlur(hsv, (9, 9), 0)
+        mask = cv2.inRange(hsv, COLOR_BOUND[color][0], COLOR_BOUND[color][1])
         mask_rgb = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
         self.filtered_frame = self.frame & mask_rgb
 
     def __get_objectives(self):
-        # 400, 300, 200
-        # cv2.imshow("filtered", self.filtered_frame)
-        # cv2.waitKey(0)
-        self.range = [400, 300, 200]
-        for obj in range(3):
-            y = self.range[obj-1]
-            pt1, pt2 = None, None
-            for x in range(0, 640):
-                if not np.array_equal(self.filtered_frame[y][x], np.array([0, 0, 0])):
-                    pt1 = (x, y)
-                    break
-            for x in range(639, -1):
-                if not np.array_equal(self.filtered_frame[y][x], np.array([0, 0, 0])):
-                    pt2 = (x, y)
-                    break
-            if pt1 is None or pt2 is None:
-                # print("[INFO] No objectives found, trying another distance")
-                if self.range[obj] < 25:
-                    print("[WARN] No objectives found")
-                    return False, None
-                self.range[obj] -= 25
-                obj -= 1
-                continue
-            self.objectives[obj] = np.mean(pt1 + pt2)
-        return True, self.objectives
+        goal = np.array([0, 0])
+        contours, _ = cv2.findContours(self.filtered_frame, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        if len(contours) == 0:
+            return False, goal
+        contour = sorted(contours, key=cv2.contourArea, reverse=True)[0]
+        moment = cv2.moments(contour)
+        if moment["m00"] != 0:
+            x = int(moment["m10"] / moment["m00"])
+            y = int(moment["m01"] / moment["m00"])
+            goal = np.array([x, y])
+        return True, goal
 
     def live_cam(self):
         _, frame = self.cam.read()

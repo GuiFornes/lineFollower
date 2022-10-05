@@ -1,5 +1,5 @@
+import odometry
 import utils
-import vision
 import threading
 import pypot.dynamixel as dm
 import time
@@ -7,6 +7,8 @@ import sys
 
 from constants import *
 import kinematics
+import vision
+import odometry
 
 
 class Robot:
@@ -23,16 +25,15 @@ class Robot:
         # Init vision and camera
         self.vision = vision.Vision()
 
+        # Init odometry
+        self.odom = odometry.Odometry()
+
         # Init variables
-        self.position = np.array([0, 0])
-        self.orientation = 0
-        self.speedL = 0
-        self.speedR = 0
-        self.posL = 0
-        self.posR = 0
+        self.asked_speedL = 0
+        self.asked_speedR = 0
         self.linear_speed = 0
         self.angular_speed = 0
-        self.traj_buffer = [0, 0]
+        self.last_goal = [0, 0]
 
         # Init communication thread
         self.com_thread = threading.Thread(target=self.__communicator)
@@ -48,19 +49,19 @@ class Robot:
     def get_speed(self):
         return self.speedL, self.speedR
 
-    def follow_line(self, color=RED):
+    def follow_line(self, color=GREEN):
         target = self.__compute_target(color)
         left, right = kinematics.go_to_xya(0, 0, 0, target[0], target[1], 0)
         self.set_speed(left, right)
 
-    def __compute_target(self, color=RED):
-        ret, objectives = self.vision.update(color)
+    def __compute_target(self, color=GREEN):
+        ret, goal = self.vision.update(color)  # in pixels
         if ret:
-            goal = 0, 0.005, 0
+            goal = self.position + [0, 0.005], self.orientation
         else:
-            pt = objectives[0]
-            goal = pt[0], pt[1], np.atan2(pt[0], pt[1])
-        return goal
+            goal = self.position + kinematics.pixel_to_robot(*goal), self.orientation + np.atan2(goal[0], goal[1])
+            self.last_goal = goal
+        return goal  # meters, world frame
 
     def update_position(self):
         pass
@@ -74,26 +75,28 @@ class Robot:
     def draw_me_a_map(self):
         pass
 
-    def enable_tork(self):
+    def non_compliant(self):
         self.dxl_io.enable_torque([2, 5])
 
-    def disable_tork(self):
+    def compliant(self):
         self.dxl_io.disable_torque([2, 5])
 
     def __communicator(self):
         while True:
+            t = time.time()
             # Enable motors
             input_kb = str(sys.stdin.readline()).strip("\n")
             if input_kb == "s":
-                self.disable_tork()
+                self.compliant()
             if input_kb == "r":
-                self.enable_tork()
+                self.non_compliant()
 
             # Send orders
             self.dxl_io.set_moving_speed({2: utils.rad_to_deg_second(-self.speedL)})
             self.dxl_io.set_moving_speed({5: utils.rad_to_deg_second(self.speedR)})
 
             # Update robot information
-            self.posL = utils.deg_to_rad(self.dxl_io.get_present_position((2,)))
-            self.posR = utils.deg_to_rad(self.dxl_io.get_present_position((5,)))
+            self.odom.posL = utils.deg_to_rad(self.dxl_io.get_present_position((2,)))
+            self.odom.posR = utils.deg_to_rad(self.dxl_io.get_present_position((5,)))
+            self.odom.update(self.odom.posL, self.odom.posR, time.time() - t)
             time.sleep(0.1)
