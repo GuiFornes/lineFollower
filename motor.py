@@ -9,11 +9,9 @@ if not ports:
 dxl_io = dm.DxlIO(ports[0])
 motor_ids=dxl_io(ports[0]).scan()
 dxl_io.set_wheel_mode([5])
-dxl_io.set_moving_speed({5: 3600}) # Degrees / s'''
+dxl_io.set_moving_speed({5: 360}) # Degrees / s'''
 dxl_io.set_moving_speed({2: -360})
 time.sleep(2)
-dxl_io.set_moving_speed({2: 360})
-time.sleep(5)
 
 dxl_io.set_moving_speed({2: 0}) 
 dxl_io.set_moving_speed({5: 0})
