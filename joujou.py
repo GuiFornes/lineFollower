@@ -1,9 +1,8 @@
+import gc
 import pypot.dynamixel as dm
-import pybullet as p
+import keyboard
 import time
-import os
-os.environ['DISPLAY'] = ':0'
-physicsClient = p.connect(p.GUI)
+
 
 ports = dm.get_available_ports()
 if not ports:
@@ -13,20 +12,18 @@ dxl_io = dm.DxlIO(ports[0])
 dxl_io.set_wheel_mode([2])
 dxl_io.set_wheel_mode([5])
 
-
 while True:
-    keys = p.getKeyboardEvents()
     speedL, speedR = 0, 0
-    if 122 in keys:
+    if keyboard.is_pressed('z'):
         speedL += 360
         speedR += -360
-    if 115 in keys:
+    if keyboard.is_pressed('s'):
         speedL += 360
         speedR += -360
-    if 113 in keys:
+    if keyboard.is_pressed('q'):
         speedL += 0
         speedR += -100
-    if 100 in keys:
+    if keyboard.is_pressed('d'):
         speedL += 100
         speedR += 0
 
