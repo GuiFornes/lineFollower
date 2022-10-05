@@ -1,17 +1,17 @@
 import cv2
 import numpy as np
-
-BLUE, RED = 0, 1
-
-COLOR_BOUND = [  # BGR
-    (np.array([175, 75, 0]), np.array([255, 200, 130])),  # BLUE
-    (np.array([60, 50, 180]), np.array([200, 150, 255])),  # RED
-]
+import kinematics
+from constants import *
 
 
 class Vision:
     def __init__(self):
-        self.cam = cv2.VideoCapture(2)
+        try:
+            self.cam = cv2.VideoCapture(2)
+        except Exception as e:
+            print("[ERROR] Camera not found")
+            print(e)
+            exit(1)
         self.frame = cv2.imread("frame.png")  # For testing
         self.filtered_frame = None
         self.range = [400, 300, 200]
@@ -19,7 +19,10 @@ class Vision:
 
     def update(self, color=BLUE):
         self.__filter(color)
-        return self.__get_objectives()
+        ret, goals = self.__get_objectives()  # in pixels
+        if ret:
+            goals = [kinematics.pixel_to_robot(*goal) for goal in goals]  # in meters, robot reference frame
+        return ret, goals
 
     def __filter(self, color=BLUE):
         ret, self.frame = self.cam.read()
@@ -46,7 +49,7 @@ class Vision:
                     pt2 = (x, y)
                     break
             if pt1 is None or pt2 is None:
-                print("[INFO] No objectives found, trying another distance")
+                # print("[INFO] No objectives found, trying another distance")
                 if self.range[obj] < 25:
                     print("[WARN] No objectives found")
                     return False, None
