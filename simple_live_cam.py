@@ -2,6 +2,10 @@ import cv2
 
 
 if __name__ == "__main__":
+    frame = cv2.imread("frame.png")
+    cv2.imshow("frame", frame)
+    cv2.waitKey(0)
+
     cam = cv2.VideoCapture(2)
 
     while True:

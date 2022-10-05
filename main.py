@@ -1,3 +1,6 @@
+from robot import Robot
 
-def simple_loop():
-    return 0
+BLUE, RED, GREEN = 0, 1, 2
+
+firstBot = Robot()
+firstBot.follow_line(color=RED)
