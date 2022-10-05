@@ -6,9 +6,9 @@ ports = dm.get_available_ports()
 if not ports:
     exit('No port')
 dxl_io = dm.DxlIO(ports[0])
-motor_ids = dxl_io(ports[0]).scan()
-dxl_io.set_wheel_mode(motor_ids[0])
-dxl_io.set_wheel_mode(motor_ids[1])
+# motor_ids = dxl_io(ports[0]).scan()
+dxl_io.set_wheel_mode([2])
+dxl_io.set_wheel_mode([5])
 
 
 while True:
