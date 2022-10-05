@@ -55,18 +55,28 @@ def inverse_kinematics(linear, angular):
     :param angular: angular velocity (rad/s)
     :return: left wheel speed, right wheel speed (rad/s)
     """
+    speedL = 1 / (2 * RADIUS) * (2 * linear - angular * L)
+    speedR = 1 / (2 * RADIUS) * (2 * linear + angular * L)
+    return speedL, speedR
 
 
-
-def go_to_xya(x, y, theta):
+def go_to_xya(currX, currY, currTheta, x, y, theta):
     """
-    This function calculates the wheel speeds to go to a specific position
+    This function calculates the wheel speeds to go to a specific position in the world frame
+    :param currX: current x position (m)
+    :param currY: current y position (m)
+    :param currTheta: current theta (rad)
     :param x: x position (m)
     :param y: y position (m)
     :param theta: theta (rad)
     :return: left wheel speed, right wheel speed (rad/s)
     """
-    pass
+    dx = x - currX
+    dy = y - currY
+    dtheta = theta - currTheta
+    linear = np.sqrt(dx ** 2 + dy ** 2)
+    angular = dtheta
+    return inverse_kinematics(linear, angular)
 
 
 def pixel_to_robot(x, y):
