@@ -84,9 +84,10 @@ def pixel_to_robot(x, y):
     This function converts the pixel coordinates to robot coordinates
     :param x: x position (pixel)
     :param y: y position (pixel)
-    :return: x, y, z (m)
+    :return: x, y (m)
     """
-    pass
+    dx, dy = x - ORIGIN[0], y - ORIGIN[1]
+    return dx * SCALE[0], dy * SCALE[1]
 
 
 def pixel_to_world(x, y):

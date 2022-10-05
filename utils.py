@@ -34,6 +34,17 @@ def circumscribed_circle(A, B, C):
     return cen, rad
 
 
+def rad_to_deg_second(rad):
+    """Convert radian/s to degree/s."""
+    return rad * 180 / np.pi
+
+
+def deg_to_rad(deg):
+    """Convert degrees to radians."""
+    return deg * np.pi / 180
+
+
+
 if __name__ == "__main__":
     A = np.array([0, 0])
     B = np.array([1, 1])
