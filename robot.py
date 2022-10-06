@@ -117,7 +117,7 @@ class Robot:
 
             # Update robot information
             # print("[INFO] Updating robot information")
-            # print("[INFO] Reading encoders : ", self.dxl_io.get_present_speed((2,)))
+            print("[INFO] Reading encoders : ", self.dxl_io.get_present_speed((2,)))
             speedL, speedR = self.dxl_io.get_present_speed([2, 5])
 
             self.odom.real_speedL = utils.deg_to_rad_second(speedL)
