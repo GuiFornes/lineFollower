@@ -30,7 +30,7 @@ class Robot:
         self.odom = odometry.Odometry()
 
         # Init variables
-        self.move_speed = 5  # rad/s
+        self.move_speed = 2  # rad/s
         self.asked_speedL = 0
         self.asked_speedR = 0
         self.linear_speed = 0
@@ -84,18 +84,18 @@ class Robot:
         self.tmp_prev = time.time()
         left_instruction = self.move_speed + correction
         right_instruction = self.move_speed - correction
-        if left_instruction > 10:
-            right_instruction = right_instruction - (left_instruction - 10)
-            left_instruction = 10
-        elif left_instruction < -10:
-            right_instruction = right_instruction + (-10 - left_instruction)
-            left_instruction = -10
-        if right_instruction > 10:
-            left_instruction = left_instruction - (right_instruction - 10)
-            right_instruction = 10
-        elif right_instruction < -10:
-            left_instruction = left_instruction + (-10 - right_instruction)
-            right_instruction = -10
+        if left_instruction > 2*np.pi:
+            right_instruction = right_instruction - (left_instruction - 2*np.pi)
+            left_instruction = 2*np.pi
+        elif left_instruction < -2*np.pi:
+            right_instruction = right_instruction + (-2*np.pi - left_instruction)
+            left_instruction = -2*np.pi
+        if right_instruction > 2*np.pi:
+            left_instruction = left_instruction - (right_instruction - 2*np.pi)
+            right_instruction = 2*np.pi
+        elif right_instruction < -2*np.pi:
+            left_instruction = left_instruction + (-2*np.pi - right_instruction)
+            right_instruction = -2*np.pi
         return left_instruction, right_instruction
 
     def go_to_objective(self):
