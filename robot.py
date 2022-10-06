@@ -40,7 +40,7 @@ class Robot:
         # Init PID
         self.previous_error = 0
         self.tmp_prev = time.time()
-        self.kp = 0.9
+        self.kp = 0.1
         self.Kd = 0
         self.kpa = 1
         self.kpd = 300
@@ -68,8 +68,8 @@ class Robot:
         self.non_compliant()
         print("[INFO] Following line ", color)
         while True:
-            ret, goal = self.vision.update(color)
-            if not ret:
+            goal = self.vision.detect(color)
+            if goal[0] == 0 and goal[1] == 0:
                 left, right = 2, 2
             else:
                 left, right = self.__pid(*goal)
@@ -82,8 +82,8 @@ class Robot:
         correction = self.kp * error + self.Kd * (error - self.previous_error) / (time.time() - self.tmp_prev)
         self.previous_error = error
         self.tmp_prev = time.time()
-        left_instruction = self.move_speed + correction
-        right_instruction = self.move_speed - correction
+        left_instruction = self.move_speed + math.radians(correction)
+        right_instruction = self.move_speed - math.radians(correction)
         if left_instruction > 2*np.pi:
             right_instruction = right_instruction - (left_instruction - 2*np.pi)
             left_instruction = 2*np.pi
