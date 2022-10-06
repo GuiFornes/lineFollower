@@ -10,6 +10,7 @@ firstBot = Robot()
 print("[INFO] FirstBot is ready to go")
 
 try:
+    firstBot.non_compliant()
     speedL, speedR = kin.go_to_xya(*firstBot.odom.position, firstBot.odom.orientation, 0.1, 0 , 0)
     print(f"speedL:{speedL} , speedR:{speedR}")
     firstBot.set_speed(speedL, speedR)
