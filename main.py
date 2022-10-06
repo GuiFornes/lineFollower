@@ -21,7 +21,7 @@ if follow:
 
 else:
     firstBot.compliant()
-    # while True:
-    #    print("[INFO] motor speed: ", firstBot.get_real_speed())
-    #    print("[INFO] position: ", firstBot.get_location())
-    #    time.sleep(0.5)
+    while True:
+        print("[INFO] motor speed: ", firstBot.get_real_speed())
+        print("[INFO] position: ", firstBot.get_location())
+        time.sleep(0.5)
