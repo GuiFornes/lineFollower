@@ -59,7 +59,7 @@ class Robot:
         print("[INFO] Following line ", color)
         while True:
             target = self.__compute_target(color)
-            print("[INFO] Target: ", target)
+            print("\n[INFO] Target: ", target)
             left, right = kinematics.go_to_xya(0, 0, 0, *target[0], target[1])
             print("[INFO] Left: ", left, "Right: ", right)
             self.set_speed(left, right)
@@ -80,12 +80,13 @@ class Robot:
         pass
 
     def where_did_i_go(self):
-        print("[INFO] Position: ", self.odom.position, self.odom.orientation)
+        print("\n[INFO] Position: ", self.odom.position, self.odom.orientation)
         print("[INFO] Now compliant for 5 seconds: ", )
         self.compliant()
         t = time.time()
         while time.time()-t < 5:
             self.__communicator()
+            print("[INFO] Position: ", self.odom.position, self.odom.orientation)
         self.non_compliant()
         print("[INFO] No more compliant")
         print("[INFO] Position: ", self.odom.position, self.odom.orientation)
