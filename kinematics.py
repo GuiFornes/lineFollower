@@ -32,6 +32,7 @@ def odom(linear, angular, t):
     dx = (linear / angular) * np.sin(angular * t)
     dy = (linear / angular) * (np.cos(angular * t) - 1)
     dtheta = angular * t
+    print(f"vitesse : {dx/t}")
     return dx, dy, dtheta
 
 
