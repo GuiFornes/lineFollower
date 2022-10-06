@@ -13,6 +13,7 @@ class Odometry:
         self.lin_speedR = 0
 
     def update(self, t):
+        print("t : ", t)
         print("[INFO] Updating odometry, rotation speed L&R: ", self.rot_speedL, self.rot_speedR)
         linear, angular = kin.direct_kinematics(self.rot_speedL, self.rot_speedR)
         print("Linear, angular speed: ", linear, angular)
