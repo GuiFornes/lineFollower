@@ -47,7 +47,7 @@ def tick_odom(x, y, theta, linear, angular, t):
     :return: new_x, new_y, new_theta (m, m, rad)
     """
     dx, dy, dtheta = odom(linear, angular, t)
-    return x + dx * np.cos(theta) - dy * np.sin(theta), y + x + dx * np.sin(theta) + dy * np.cos(theta), theta + dtheta
+    return x + dx * np.cos(theta) - dy * np.sin(theta), y + dx * np.sin(theta) + dy * np.cos(theta), theta + dtheta
 
 
 def inverse_kinematics(linear, angular):
