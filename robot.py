@@ -53,8 +53,11 @@ class Robot:
         print("[INFO] Following line ", color)
         while True:
             target = self.__compute_target(color)
+            print("[INFO] Target: ", target)
             left, right = kinematics.go_to_xya(0, 0, 0, *target[0], target[1])
+            print("[INFO] Left: ", left, "Right: ", right)
             self.set_speed(left, right)
+            print("[INFO] Speed set: ", self.get_speed())
 
     def __compute_target(self, color=GREEN):
         ret, goal = self.vision.update(color)  # in pixels
@@ -89,9 +92,11 @@ class Robot:
         self.dxl_io.disable_torque([2, 5])
 
     def __communicator(self):
+        print("[INFO] Communicator thread started")
         while True:
             t = time.time()
             # Enable motors
+            print("[INFO] reading keyboard entry")
             input_kb = str(sys.stdin.readline()).strip("\n")
             if input_kb == "s":
                 self.compliant()
@@ -99,10 +104,12 @@ class Robot:
                 self.non_compliant()
 
             # Send orders
+            print("[INFO] Sending orders")
             self.dxl_io.set_moving_speed({2: utils.rad_to_deg_second(self.speedL)})
             self.dxl_io.set_moving_speed({5: utils.rad_to_deg_second(-self.speedR)})
 
             # Update robot information
+            print("[INFO] Updating robot information")
             self.odom.real_speedL = utils.deg_to_rad_second(self.dxl_io.get_present_speed((2,)))
             self.odom.real_speedR = utils.deg_to_rad_second(-self.dxl_io.get_present_speed((5,)))
             self.odom.update(time.time() - t)
