@@ -48,8 +48,11 @@ class Robot:
         self.asked_speedL = speedL * self.move_speed
         self.asked_speedR = speedR * self.move_speed
 
-    def get_speed(self):
+    def get_asked_speed(self):
         return self.asked_speedL, self.asked_speedR
+
+    def get_real_speed(self):
+        return self.odom.rot_speedL, self.odom.rot_speedR
 
     def follow_line(self, color=GREEN):
         print("[INFO] Following line ", color)
@@ -88,10 +91,10 @@ class Robot:
         pass
 
     def non_compliant(self):
-        self.dxl_io.enable_torque([2, 5])
+        self.dxl_io.disable_torque([2, 5])
 
     def compliant(self):
-        self.dxl_io.disable_torque([2, 5])
+        self.dxl_io.enable_torque([2, 5])
 
     def __communicator(self):
         print("[INFO] Communicator thread started")
@@ -107,13 +110,13 @@ class Robot:
                 self.non_compliant()
             """
             # Send orders
-            print("[INFO] Sending orders")
+            # print("[INFO] Sending orders")
             self.dxl_io.set_moving_speed({2: utils.rad_to_deg_second(self.asked_speedL)})
             self.dxl_io.set_moving_speed({5: utils.rad_to_deg_second(-self.asked_speedR)})
 
             # Update robot information
-            print("[INFO] Updating robot information")
-            print("[INFO] Reading encoders : ", self.dxl_io.get_present_speed((2,)))
+            # print("[INFO] Updating robot information")
+            # print("[INFO] Reading encoders : ", self.dxl_io.get_present_speed((2,)))
             speedL, speedR = self.dxl_io.get_present_speed([2, 5])
 
             self.odom.real_speedL = utils.deg_to_rad_second(speedL)
