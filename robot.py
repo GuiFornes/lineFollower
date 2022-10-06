@@ -96,13 +96,14 @@ class Robot:
         while True:
             t = time.time()
             # Enable motors
+            """
             print("[INFO] reading keyboard entry")
             input_kb = str(sys.stdin.readline()).strip("\n")
             if input_kb == "s":
                 self.compliant()
             if input_kb == "r":
                 self.non_compliant()
-
+            """
             # Send orders
             print("[INFO] Sending orders")
             self.dxl_io.set_moving_speed({2: utils.rad_to_deg_second(self.speedL)})
