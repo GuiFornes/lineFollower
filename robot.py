@@ -69,7 +69,8 @@ class Robot:
         if not ret:
             goal = self.odom.position + [0, 0.01], self.odom.orientation
         else:
-            goal = self.odom.position + kinematics.pixel_to_robot(*goal), self.odom.orientation + math.atan2(goal[0], goal[1])
+            goal = self.odom.position + kinematics.pixel_to_robot(*goal), self.odom.orientation + math.atan2(goal[0],
+                                                                                                             goal[1])
             self.last_goal = goal
         return goal  # meters, world frame
 
@@ -91,10 +92,10 @@ class Robot:
         pass
 
     def non_compliant(self):
-        self.dxl_io.enable_torque([2, 5])
+        self.dxl_io.set_torque_limit({2: 100, 5: 100})
 
     def compliant(self):
-        self.dxl_io.disable_torque([2, 5])
+        self.dxl_io.set_torque_limit({2: 0, 5: 0})
 
     def __communicator(self):
         print("[INFO] Communicator thread started")
