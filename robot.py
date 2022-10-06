@@ -50,9 +50,11 @@ class Robot:
         return self.speedL, self.speedR
 
     def follow_line(self, color=GREEN):
-        target = self.__compute_target(color)
-        left, right = kinematics.go_to_xya(0, 0, 0, *target[0], target[1])
-        self.set_speed(left, right)
+        print("[INFO] Following line ", color)
+        while True:
+            target = self.__compute_target(color)
+            left, right = kinematics.go_to_xya(0, 0, 0, *target[0], target[1])
+            self.set_speed(left, right)
 
     def __compute_target(self, color=GREEN):
         ret, goal = self.vision.update(color)  # in pixels
