@@ -4,6 +4,7 @@ import threading
 import pypot.dynamixel as dm
 import time
 import sys
+import math
 
 from constants import *
 import kinematics
@@ -65,7 +66,7 @@ class Robot:
         if ret:
             goal = self.odom.position + [0, 0.01], self.odom.orientation
         else:
-            goal = self.odom.position + kinematics.pixel_to_robot(*goal), self.odom.orientation + np.atan2(goal[0], goal[1])
+            goal = self.odom.position + kinematics.pixel_to_robot(*goal), self.odom.orientation + math.atan2(goal[0], goal[1])
             self.last_goal = goal
         return goal  # meters, world frame
 
