@@ -117,11 +117,11 @@ class Robot:
 
             # Update robot information
             # print("[INFO] Updating robot information")
-            # print("[INFO] Reading encoders : ", self.dxl_io.get_present_speed((2, 5)))
-            speedL, speedR = self.dxl_io.get_moving_speed([2, 5])
+            print("[INFO] Reading encoders : ", self.dxl_io.get_present_speed((2, 5)))
+            speedL, speedR = self.dxl_io.get_present_speed([2, 5])
 
-            self.odom.rot_speedL = utils.deg_to_rad_second(speedL)
-            self.odom.rot_speedR = utils.deg_to_rad_second(-speedR)
+            self.odom.rot_speedL = math.radians(speedL)
+            self.odom.rot_speedR = math.radians(-speedR)
             self.odom.update(time.time() - t)
             time.sleep(0.3)
 
