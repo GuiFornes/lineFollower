@@ -30,12 +30,21 @@ class Robot:
         self.odom = odometry.Odometry()
 
         # Init variables
-        self.move_speed = 1
+        self.move_speed = 5  # rad/s
         self.asked_speedL = 0
         self.asked_speedR = 0
         self.linear_speed = 0
         self.angular_speed = 0
         self.last_goal = [0, 0]
+
+        # Init PID
+        self.previous_error = 0
+        self.tmp_prev = time.time()
+        self.kp = 0.9
+        self.Kd = 0
+        self.kpa = 1
+        self.kpd = 300
+        self.Kp_theta = 100
 
         # Init communication thread
         # self.com_thread = threading.Thread(target=self.communicator)
@@ -59,28 +68,35 @@ class Robot:
         self.non_compliant()
         print("[INFO] Following line ", color)
         while True:
-            target = self.__compute_target(color)
-            print("\n[INFO] Target: ", target)
-            left, right = kinematics.go_to_xya(*self.odom.position, self.odom.orientation, *target[0], target[1])
-            print("[INFO] Left: ", left, "Right: ", right)
+            ret, goal = self.vision.update(color)
+            if not ret:
+                left, right = 2, 2
+            else:
+                left, right = self.__pid(*goal)
             self.set_speed(left, right)
             print("[INFO] Speed set: ", self.get_asked_speed())
             self.communicator()
 
-    def __compute_target(self, color=GREEN):
-        ret, goal = self.vision.update(color)  # in pixels
-        if not ret:
-            print("[INFO] No goal found")
-            robot_goal = np.array([0, 0.05])
-            world_goal = self.odom.position + robot_goal @ utils.rotation_matrix(self.odom.orientation), self.odom.orientation
-        else:
-            print("[DEBUG] Goal found: ", goal)
-            robot_goal = kinematics.pixel_to_robot(*goal)
-            print("[DEBUG] Robot goal: ", robot_goal)
-            world_goal = self.odom.position + robot_goal @ utils.rotation_matrix(self.odom.orientation), self.odom.orientation + math.atan2(robot_goal[0], robot_goal[1])
-            print("[DEBUG] World goal: ", world_goal)
-            self.last_goal = world_goal
-        return world_goal  # meters, world frame
+    def __pid(self, x, y):
+        error = x - 320  # middle of the img
+        correction = self.kp * error + self.Kd * (error - self.previous_error) / (time.time() - self.tmp_prev)
+        self.previous_error = error
+        self.tmp_prev = time.time()
+        left_instruction = self.move_speed + correction
+        right_instruction = self.move_speed - correction
+        if left_instruction > 720:
+            right_instruction = right_instruction - (left_instruction - 720)
+            left_instruction = 720
+        elif left_instruction < -720:
+            right_instruction = right_instruction + (-720 - left_instruction)
+            left_instruction = -720
+        if right_instruction > 720:
+            left_instruction = left_instruction - (right_instruction - 720)
+            right_instruction = 720
+        elif right_instruction < -720:
+            left_instruction = left_instruction + (-720 - right_instruction)
+            right_instruction = -720
+        return left_instruction, right_instruction
 
     def go_to_objective(self):
         pass
@@ -90,12 +106,14 @@ class Robot:
         print("[INFO] Now compliant for infini seconds: ", )
         self.compliant()
         t = time.time()
-        while True:
-            self.communicator()
-            # print("[INFO] Position: ", self.odom.position, self.odom.orientation)
-        self.non_compliant()
-        print("[INFO] No more compliant")
-        print("[INFO] Position: ", self.odom.position, self.odom.orientation)
+        try:
+            while True:
+                self.communicator()
+                # print("[INFO] Position: ", self.odom.position, self.odom.orientation)
+        except KeyboardInterrupt:
+            self.non_compliant()
+            print("[INFO] No more compliant")
+            print("[INFO] Position: ", self.odom.position, self.odom.orientation)
 
         return self.odom.position, self.odom.orientation
 

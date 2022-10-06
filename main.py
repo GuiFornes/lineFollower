@@ -1,7 +1,7 @@
 #! /usr/bin/env python3
 from robot import Robot
 import time
-form constants import *
+from constants import *
 
 print("[INFO] Connecting to motors ...")
 firstBot = Robot()

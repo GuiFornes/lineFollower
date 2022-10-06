@@ -7,7 +7,7 @@ from constants import *
 class Vision:
     def __init__(self):
         try:
-            self.cam = cv2.VideoCapture(0)
+            self.cam = cv2.VideoCapture(2)
         except Exception as e:
             print("[ERROR] Camera not found")
             print(e)
@@ -23,6 +23,8 @@ class Vision:
     def __filter(self, color=GREEN):
         ret, self.frame = self.cam.read()
         hsv = cv2.cvtColor(self.frame, cv2.COLOR_BGR2HSV)
+        # equalize histogram
+        hsv[:, :, 2] = cv2.equalizeHist(hsv[:, :, 2])
         hsv = cv2.GaussianBlur(hsv, (9, 9), 0)
         mask = cv2.inRange(hsv, COLOR_BOUND[color][0], COLOR_BOUND[color][1])
         self.filtered_frame = mask
@@ -33,6 +35,8 @@ class Vision:
         if len(contours) == 0:
             return False, goal
         contour = sorted(contours, key=cv2.contourArea, reverse=True)[0]
+        if cv2.contourArea(contour) < 100:
+            return False, goal
         moment = cv2.moments(contour)
         if moment["m00"] != 0:
             y = int(moment["m10"] / moment["m00"])
@@ -54,6 +58,9 @@ class Vision:
             return
         contour = sorted(contours, key=cv2.contourArea, reverse=True)[0]
         moment = cv2.moments(contour)
+        print("Contour area = ", cv2.contourArea(contour))
+        if cv2.contourArea(contour) < 10000:
+            return
         if moment["m00"] != 0:
             x = int(moment["m10"] / moment["m00"])
             y = int(moment["m01"] / moment["m00"])
