@@ -25,8 +25,7 @@ class Vision:
         hsv = cv2.cvtColor(self.frame, cv2.COLOR_BGR2HSV)
         hsv = cv2.GaussianBlur(hsv, (9, 9), 0)
         mask = cv2.inRange(hsv, COLOR_BOUND[color][0], COLOR_BOUND[color][1])
-        mask_rgb = cv2.cvtColor(mask, cv2.COLOR_GRAY2BGR)
-        self.filtered_frame = self.frame & mask_rgb
+        self.filtered_frame = mask
 
     def __get_objectives(self):
         goal = np.array([0, 0])
@@ -47,7 +46,9 @@ class Vision:
 
     def disp_image(self):
         cv2.imshow("image", self.frame)
-        cv2.imshow("filtered", self.filtered_frame)
+        mask = cv2.cvtColor(self.filtered_frame, cv2.COLOR_GRAY2BGR)
+        filtered = self.frame & mask
+        cv2.imshow("filtered", filtered)
 
 
 if __name__ == "__main__":
