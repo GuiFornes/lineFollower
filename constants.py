@@ -13,5 +13,5 @@ GREEN, BLUE, RED, YELLOW = 0, 1, 2, 3  # Green not programmed yet in vision part
 COLOR_BOUND = [  # HSV
     (np.array([73, 137, 119]), np.array([79, 255, 228])),  # GREEN
     (np.array([99, 90, 145]), np.array([102, 255, 255])),  # BLUE
-    (np.array([0, 160, 161]), np.array([10, 254, 255]))  # RED
+    (np.array([0, 160, 161]), np.array([10, 254, 255]))  # RED 
 ]
