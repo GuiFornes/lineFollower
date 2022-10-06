@@ -112,8 +112,8 @@ class Robot:
             """
             # Send orders
             # print("[INFO] Sending orders")
-            self.dxl_io.set_moving_speed({2: utils.rad_to_deg_second(self.asked_speedL)})
-            self.dxl_io.set_moving_speed({5: utils.rad_to_deg_second(-self.asked_speedR)})
+            self.dxl_io.set_moving_speed({2: math.degrees(self.asked_speedL)})
+            self.dxl_io.set_moving_speed({5: math.degrees(-self.asked_speedR)})
 
             # Update robot information
             # print("[INFO] Updating robot information")
