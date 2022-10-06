@@ -10,4 +10,4 @@ except KeyboardInterrupt:
     print("[INFO] Stopping robot, bye bye")
 finally:
     firstBot.set_speed(0, 0)
-    firstBot.disable_tork()  # Disable motors instead (disable tork)
+    firstBot.compliant()  # Disable motors instead (disable tork)
