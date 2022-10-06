@@ -38,7 +38,7 @@ class Robot:
         self.last_goal = [0, 0]
 
         # Init communication thread
-        # self.com_thread = threading.Thread(target=self.__communicator)
+        # self.com_thread = threading.Thread(target=self.communicator)
         # self.com_thread.start()
         # self.time_thread = 0
 
@@ -65,7 +65,7 @@ class Robot:
             print("[INFO] Left: ", left, "Right: ", right)
             self.set_speed(left, right)
             print("[INFO] Speed set: ", self.get_asked_speed())
-            self.__communicator()
+            self.communicator()
 
     def __compute_target(self, color=GREEN):
         ret, goal = self.vision.update(color)  # in pixels
@@ -91,7 +91,7 @@ class Robot:
         self.compliant()
         t = time.time()
         while True:
-            self.__communicator()
+            self.communicator()
             # print("[INFO] Position: ", self.odom.position, self.odom.orientation)
         self.non_compliant()
         print("[INFO] No more compliant")
@@ -108,8 +108,8 @@ class Robot:
     def compliant(self):
         self.dxl_io.set_torque_limit({2: 0, 5: 0})
 
-    def __communicator(self):
-        # print("[INFO] Communicator thread started")
+    def communicator(self):
+        # print("[INFO] communicator thread started")
 
         t = time.time()
         # Enable motors
