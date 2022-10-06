@@ -53,7 +53,7 @@ class Vision:
 if __name__ == "__main__":
     vision = Vision()
     while True:
-        vision.update()
+        vision.update(color=GREEN)
         vision.disp_image()
         if cv2.waitKey(1) & 0xFF == ord("q"):
             break

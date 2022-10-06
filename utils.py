@@ -39,7 +39,7 @@ def rad_to_deg_second(rad):
     return rad * 180 / np.pi
 
 
-def deg_to_rad(deg):
+def deg_to_rad_second(deg):
     """Convert degrees to radians."""
     return deg * np.pi / 180
 
