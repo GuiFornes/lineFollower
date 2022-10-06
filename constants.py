@@ -3,7 +3,7 @@ import numpy as np
 """
 This file contains all the constants used in the project.
 """
-RADIUS = 0.0251  # radius of the wheels (m)
+RADIUS = 0.0255  # radius of the wheels (m)
 L = 0.122  # Distance between the wheels (m)
 
 ORIGIN = 320, 480  # Origin of the robot (pixels)
