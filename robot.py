@@ -56,6 +56,7 @@ class Robot:
         return self.odom.rot_speedL, self.odom.rot_speedR
 
     def follow_line(self, color=GREEN):
+        self.non_compliant()
         print("[INFO] Following line ", color)
         while True:
             target = self.__compute_target(color)
@@ -116,7 +117,7 @@ class Robot:
             self.non_compliant()
         """
         # Send orders
-        print("[INFO] Sending orders", self.get_asked_speed())
+        # print("[INFO] Sending orders", self.get_asked_speed())
         self.dxl_io.set_moving_speed({2: math.degrees(self.asked_speedL)})
         self.dxl_io.set_moving_speed({5: math.degrees(-self.asked_speedR)})
 
