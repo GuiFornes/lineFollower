@@ -63,7 +63,7 @@ class Robot:
             left, right = kinematics.go_to_xya(0, 0, 0, *target[0], target[1])
             print("[INFO] Left: ", left, "Right: ", right)
             self.set_speed(left, right)
-            print("[INFO] Speed set: ", self.get_real_speed())
+            print("[INFO] Speed set: ", self.get_asked_speed())
             self.__communicator()
 
     def __compute_target(self, color=GREEN):
@@ -116,7 +116,7 @@ class Robot:
             self.non_compliant()
         """
         # Send orders
-        # print("[INFO] Sending orders")
+        print("[INFO] Sending orders", self.get_asked_speed())
         self.dxl_io.set_moving_speed({2: math.degrees(self.asked_speedL)})
         self.dxl_io.set_moving_speed({5: math.degrees(-self.asked_speedR)})
 
