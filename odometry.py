@@ -21,3 +21,4 @@ class Odometry:
             kin.tick_odom(self.position[0], self.position[1], self.orientation, linear, angular, t)
         # print("New position: ", x, y, self.orientation)
         self.position = np.array([x, y])
+        print(self.position, self.orientation)
