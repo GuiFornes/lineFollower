@@ -7,7 +7,7 @@ from constants import *
 class Vision:
     def __init__(self):
         try:
-            self.cam = cv2.VideoCapture(0)
+            self.cam = cv2.VideoCapture(2)
         except Exception as e:
             print("[ERROR] Camera not found")
             print(e)
@@ -35,7 +35,7 @@ class Vision:
         if len(contours) == 0:
             return False, goal
         contour = sorted(contours, key=cv2.contourArea, reverse=True)[0]
-        if cv2.contourArea(contour) < 100:
+        if cv2.contourArea(contour) < 1000:
             return False, goal
         moment = cv2.moments(contour)
         if moment["m00"] != 0:
@@ -78,6 +78,16 @@ class Vision:
                 c_x = int(m["m10"] / m["m00"])
                 c_y = int(m["m01"] / m["m00"])
         return c_x, c_y
+
+    def detect_yellow(self):
+        frame = self.frame
+        contours, _ = cv2.findContours(self.filtered_frame, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        if len(contours) == 0:
+            return False
+        contour = sorted(contours, key=cv2.contourArea, reverse=True)[0]
+        if cv2.contourArea(contour) < 1000:
+            return False
+        return True
 
     def live_cam(self):
         _, frame = self.cam.read()

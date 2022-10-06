@@ -64,11 +64,16 @@ class Robot:
     def get_real_speed(self):
         return self.odom.rot_speedL, self.odom.rot_speedR
 
-    def follow_line(self, color=GREEN):
+    def follower(self):
         self.non_compliant()
+        color = GREEN
+        for color in [GREEN, BLUE, RED]:
+            self.follow_line(color)
+
+    def follow_line(self, color=GREEN):
         print("[INFO] Following line ", color)
-        while True:
-            goal = self.vision.detect(color)
+        while not self.vision.detect_yellow():
+            goal = self.vision.update(color)
             if goal[0] == 0 and goal[1] == 0:
                 left, right = 2, 2
             else:
@@ -84,18 +89,18 @@ class Robot:
         self.tmp_prev = time.time()
         left_instruction = self.move_speed + math.radians(correction)
         right_instruction = self.move_speed - math.radians(correction)
-        if left_instruction > 2*np.pi:
-            right_instruction = right_instruction - (left_instruction - 2*np.pi)
-            left_instruction = 2*np.pi
-        elif left_instruction < -2*np.pi:
-            right_instruction = right_instruction + (-2*np.pi - left_instruction)
-            left_instruction = -2*np.pi
-        if right_instruction > 2*np.pi:
-            left_instruction = left_instruction - (right_instruction - 2*np.pi)
-            right_instruction = 2*np.pi
-        elif right_instruction < -2*np.pi:
-            left_instruction = left_instruction + (-2*np.pi - right_instruction)
-            right_instruction = -2*np.pi
+        if left_instruction > 2 * np.pi:
+            right_instruction = right_instruction - (left_instruction - 2 * np.pi)
+            left_instruction = 2 * np.pi
+        elif left_instruction < -2 * np.pi:
+            right_instruction = right_instruction + (-2 * np.pi - left_instruction)
+            left_instruction = -2 * np.pi
+        if right_instruction > 2 * np.pi:
+            left_instruction = left_instruction - (right_instruction - 2 * np.pi)
+            right_instruction = 2 * np.pi
+        elif right_instruction < -2 * np.pi:
+            left_instruction = left_instruction + (-2 * np.pi - right_instruction)
+            right_instruction = -2 * np.pi
         return left_instruction, right_instruction
 
     def go_to_objective(self):
