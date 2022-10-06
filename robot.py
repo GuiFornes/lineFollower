@@ -120,8 +120,8 @@ class Robot:
             print("[INFO] Reading encoders : ", self.dxl_io.get_present_speed((2,)))
             speedL, speedR = self.dxl_io.get_present_speed([2, 5])
 
-            self.odom.real_speedL = utils.deg_to_rad_second(speedL)
-            self.odom.real_speedR = utils.deg_to_rad_second(-speedR)
+            self.odom.rot_speedL = utils.deg_to_rad_second(speedL)
+            self.odom.rot_speedR = utils.deg_to_rad_second(-speedR)
             self.odom.update(time.time() - t)
             time.sleep(0.3)
 
