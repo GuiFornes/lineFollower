@@ -64,7 +64,8 @@ class Robot:
             print("[INFO] Left: ", left, "Right: ", right)
             self.set_speed(left, right)
             print("[INFO] Speed set: ", self.get_real_speed())
-            self.__communicator()
+            # self.__communicator()
+            print("ici")
 
     def __compute_target(self, color=GREEN):
         ret, goal = self.vision.update(color)  # in pixels
