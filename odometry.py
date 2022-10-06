@@ -13,11 +13,10 @@ class Odometry:
         self.lin_speedR = 0
 
     def update(self, t):
+        print("[INFO] Updating odometry")
         linear, angular = kin.direct_kinematics(self.rot_speedL, self.rot_speedR)
+        print("Linear, angular speed: ", linear, angular)
         x, y, self.orientation = \
             kin.tick_odom(self.position[0], self.position[1], self.orientation, linear, angular, t)
+        print("New position: ", x, y, self.orientation)
         self.position = np.array([x, y])
-
-    def compute_linear_speed(self):
-        self.lin_speedL = self.rot_speedL * RADIUS
-        self.lin_speedR = self.rot_speedR * RADIUS
