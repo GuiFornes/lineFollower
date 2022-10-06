@@ -3,6 +3,7 @@ import time
 
 BLUE, RED, GREEN = 0, 1, 2
 
+print("[INFO] Connecting to motors ...")
 firstBot = Robot()
 print("[INFO] FirstBot is ready to go")
 
