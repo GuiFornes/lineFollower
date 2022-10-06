@@ -18,5 +18,6 @@ if follow:
 
 else:
     firstBot.compliant()
-    print("[INFO] motor speed: ", firstBot.get_real_speed())
-    print("[INFO] position: ", firstBot.get_location())
+    while True:
+        print("[INFO] motor speed: ", firstBot.get_real_speed())
+        print("[INFO] position: ", firstBot.get_location())
