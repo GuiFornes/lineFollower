@@ -16,6 +16,8 @@ if follow:
         firstBot.follow_line(color=GREEN)
     except KeyboardInterrupt:
         print("[INFO] Stopping robot, bye bye")
+        print("time robot = ", time.time()-t_robot)
+        print("time_thread = ", firstBot.time_thread)
     finally:
         print("time robot = ", time.time()-t_robot)
         print("time_thread = ", firstBot.time_thread)
