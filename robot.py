@@ -18,9 +18,9 @@ class Robot:
         if not ports:
             exit('No port')
         self.dxl_io = dm.DxlIO(ports[0])
-        motor_ids = self.dxl_io(ports[0]).scan()
-        self.dxl_io.set_wheel_mode(motor_ids[0])
-        self.dxl_io.set_wheel_mode(motor_ids[1])
+        # motor_ids = self.dxl_io(ports[0]).scan()
+        self.dxl_io.set_wheel_mode([2])
+        self.dxl_io.set_wheel_mode([5])
 
         # Init vision and camera
         self.vision = vision.Vision()

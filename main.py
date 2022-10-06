@@ -5,7 +5,7 @@ BLUE, RED, GREEN = 0, 1, 2
 firstBot = Robot()
 
 try:
-    firstBot.follow_line(color=BLUE)
+    firstBot.follow_line(color=GREEN)
 except KeyboardInterrupt:
     print("[INFO] Stopping robot, bye bye")
 finally:
