@@ -71,11 +71,14 @@ class Robot:
         ret, goal = self.vision.update(color)  # in pixels
         if not ret:
             print("[INFO] No goal found")
-            robot_goal = np.array([0, 0.01])
+            robot_goal = np.array([0, 0.05])
             world_goal = self.odom.position + robot_goal @ utils.rotation_matrix(self.odom.orientation), self.odom.orientation
         else:
+            print("[DEBUG] Goal found: ", goal)
             robot_goal = kinematics.pixel_to_robot(*goal)
+            print("[DEBUG] Robot goal: ", robot_goal)
             world_goal = self.odom.position + robot_goal @ utils.rotation_matrix(self.odom.orientation), self.odom.orientation + math.atan2(robot_goal[0], robot_goal[1])
+            print("[DEBUG] World goal: ", world_goal)
             self.last_goal = world_goal
         return world_goal  # meters, world frame
 
