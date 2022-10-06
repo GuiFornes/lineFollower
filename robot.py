@@ -40,6 +40,7 @@ class Robot:
         # Init communication thread
         self.com_thread = threading.Thread(target=self.__communicator)
         self.com_thread.start()
+        self.time_thread = 0
 
     def get_location(self):
         return self.odom.position, self.odom.orientation
@@ -122,6 +123,7 @@ class Robot:
 
             self.odom.rot_speedL = math.radians(speedL)
             self.odom.rot_speedR = math.radians(-speedR)
+            self.time_thread += time.time() - t
             self.odom.update(time.time() - t)
             time.sleep(0.3)
 
