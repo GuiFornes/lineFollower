@@ -1,8 +1,7 @@
 #! /usr/bin/env python3
 from robot import Robot
 import time
-
-GREEN, BLUE, RED, YELLOW = 0, 1, 2, 3
+form constants import *
 
 print("[INFO] Connecting to motors ...")
 firstBot = Robot()
