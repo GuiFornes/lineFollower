@@ -20,13 +20,4 @@ if follow:
         firstBot.compliant()
 
 else:
-    firstBot.compliant()
-    t_robot = time.time()
-    try:
-        while True:
-            print("[INFO] motor speed: ", firstBot.get_real_speed())
-            print("[INFO] position: ", firstBot.get_location())
-            time.sleep(0.5)
-    except KeyboardInterrupt:
-        print("time robot = ", time.time() - t_robot)
-        print("time_thread = ", firstBot.time_thread)
+    firstBot.where_did_i_go()

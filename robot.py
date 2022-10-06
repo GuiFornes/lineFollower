@@ -38,9 +38,9 @@ class Robot:
         self.last_goal = [0, 0]
 
         # Init communication thread
-        self.com_thread = threading.Thread(target=self.__communicator)
-        self.com_thread.start()
-        self.time_thread = 0
+        # self.com_thread = threading.Thread(target=self.__communicator)
+        # self.com_thread.start()
+        # self.time_thread = 0
 
     def get_location(self):
         return self.odom.position, self.odom.orientation
@@ -63,7 +63,8 @@ class Robot:
             left, right = kinematics.go_to_xya(0, 0, 0, *target[0], target[1])
             print("[INFO] Left: ", left, "Right: ", right)
             self.set_speed(left, right)
-            print("[INFO] Speed set: ", self.get_speed())
+            print("[INFO] Speed set: ", self.get_real_speed())
+            self.__communicator()
 
     def __compute_target(self, color=GREEN):
         ret, goal = self.vision.update(color)  # in pixels
@@ -82,9 +83,11 @@ class Robot:
         print("[INFO] Position: ", self.odom.position, self.odom.orientation)
         print("[INFO] Now compliant for 5 seconds: ", )
         self.compliant()
-        time.sleep(5)
+        t = time.time()
+        while time.time()-t < 5:
+            self.__communicator()
         self.non_compliant()
-        print("[INFO] Non-compliant again")
+        print("[INFO] No more compliant")
         print("[INFO] Position: ", self.odom.position, self.odom.orientation)
 
         return self.odom.position, self.odom.orientation
@@ -99,7 +102,7 @@ class Robot:
         self.dxl_io.set_torque_limit({2: 0, 5: 0})
 
     def __communicator(self):
-        print("[INFO] Communicator thread started")
+        # print("[INFO] Communicator thread started")
         while True:
             t = time.time()
             # Enable motors
@@ -118,14 +121,14 @@ class Robot:
 
             # Update robot information
             # print("[INFO] Updating robot information")
-            print("[INFO] Reading encoders : ", self.dxl_io.get_present_speed((2, 5)))
+            # print("[INFO] Reading encoders : ", self.dxl_io.get_present_speed((2, 5)))
             speedL, speedR = self.dxl_io.get_present_speed([2, 5])
 
             self.odom.rot_speedL = math.radians(speedL)
             self.odom.rot_speedR = math.radians(-speedR)
             self.time_thread += time.time() - t
             self.odom.update(time.time() - t)
-            time.sleep(0.3)
+            time.sleep(0.1)
 
 
 if __name__ == "__main__":
