@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 from robot import Robot
+from constants import *
 import time
 import kinematics as kin
 
@@ -11,9 +12,9 @@ print("[INFO] FirstBot is ready to go")
 
 try:
     firstBot.non_compliant()
-    speedL, speedR = kin.go_to_xya(*firstBot.odom.position, firstBot.odom.orientation, 0.1, 0 , 0)
-    print(f"speedL:{speedL} , speedR:{speedR}")
-    firstBot.set_speed(speedL, speedR)
+    speed,timing = kin.go_to_xya(1,0.5,2.5*RADIUS)
+    print(f"speedL:{speed[0]} , speedR:{speed[1]}")
+    firstBot.set_speed(speed[0], speed[1])
     print(firstBot.get_asked_speed())
     firstBot.communicator()
 except KeyboardInterrupt:
