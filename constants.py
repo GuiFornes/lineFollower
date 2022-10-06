@@ -4,7 +4,7 @@ import numpy as np
 This file contains all the constants used in the project.
 """
 RADIUS = 0.0245  # radius of the wheels (m)
-L = 0.12  # Distance between the wheels (m)
+L = 0.13  # Distance between the wheels (m)
 
 ORIGIN = 320, 480  # Origin of the robot (pixels)
 SCALE = 0.047/640, 0.036/480  # Scale of the camera (m/pixel) 0.042/640
