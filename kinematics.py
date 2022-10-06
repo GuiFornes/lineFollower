@@ -25,14 +25,14 @@ def odom(linear, angular, t):
     :param t: time (s)
     :return: dx, dy, dtheta (m, m, rad)
     """
-    print(f"lin, ang : {linear:.5f}, {angular:.5f}")
+    # print(f"lin, ang : {linear:.5f}, {angular:.5f}")
     if angular == 0:
         dx, dy, dtheta = 0, linear * t, 0
     else:
         dx = (linear / angular) * (1 - np.cos(angular * t))
         dy = (linear / angular) * np.sin(angular * t)
         dtheta = angular * t
-    print(f"vitesse : {(dy/t)*100:.1f}")
+    # print(f"vitesse : {(dy/t)*100:.1f}")
     return dx*20, dy*20, dtheta
 
 
@@ -77,8 +77,8 @@ def go_to_xya(currX, currY, currTheta, x, y, theta):
     dx = x - currX
     dy = y - currY
     distance = np.sqrt(dx ** 2 + dy ** 2)
-    p1 = 1
-    p2 = 1
+    p1 = 0.2
+    p2 = 0.2
     angularspeed = (theta - currTheta) * p1
     linearspeed = distance * p2
     return inverse_kinematics(linearspeed, angularspeed)
