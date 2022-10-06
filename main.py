@@ -2,7 +2,7 @@
 from robot import Robot
 import time
 
-BLUE, RED, GREEN = 0, 1, 2
+GREEN, BLUE, RED, YELLOW = 0, 1, 2, 3
 
 print("[INFO] Connecting to motors ...")
 firstBot = Robot()
