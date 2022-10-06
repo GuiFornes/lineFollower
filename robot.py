@@ -43,11 +43,11 @@ class Robot:
         return self.odom.position, self.odom.orientation
 
     def set_speed(self, speedL, speedR):
-        self.speedL = speedL
-        self.speedR = speedR
+        self.asked_speedL = speedL
+        self.asked_speedR = speedR
 
     def get_speed(self):
-        return self.speedL, self.speedR
+        return self.asked_speedL, self.asked_speedR
 
     def follow_line(self, color=GREEN):
         print("[INFO] Following line ", color)
@@ -106,8 +106,8 @@ class Robot:
             """
             # Send orders
             print("[INFO] Sending orders")
-            self.dxl_io.set_moving_speed({2: utils.rad_to_deg_second(self.speedL)})
-            self.dxl_io.set_moving_speed({5: utils.rad_to_deg_second(-self.speedR)})
+            self.dxl_io.set_moving_speed({2: utils.rad_to_deg_second(self.asked_speedL)})
+            self.dxl_io.set_moving_speed({5: utils.rad_to_deg_second(-self.asked_speedR)})
 
             # Update robot information
             print("[INFO] Updating robot information")
