@@ -58,8 +58,8 @@ def inverse_kinematics(linear, angular):
     :param angular: angular velocity (rad/s)
     :return: left wheel speed, right wheel speed (rad/s)
     """
-    speedL = 1 / RADIUS * (linear - angular * L)
-    speedR = 1 / RADIUS * (linear + angular * L)
+    speedL = 1 / RADIUS * (linear - angular * L/2)
+    speedR = 1 / RADIUS * (linear + angular * L/2)
     return speedL, speedR
 
 
@@ -73,9 +73,9 @@ def go_to_xya(x, y,speed):
     """
 
     distance = np.sqrt(x ** 2 + y ** 2)
-    time = distance/speed
+    timing = distance/speed
     theta=np.arctan2(x,y)
-    return (inverse_kinematics(speed,theta/time),time)
+    return (inverse_kinematics(speed,theta/timing),timing/2)
 
 
 def pixel_to_robot(x, y):
