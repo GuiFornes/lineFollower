@@ -48,7 +48,6 @@ class Vision:
         cv2.imshow("image", self.frame)
         mask = cv2.cvtColor(self.filtered_frame, cv2.COLOR_GRAY2BGR)
         filtered = self.frame & mask
-        cv2.imshow("filtered", filtered)
         contours, _ = cv2.findContours(self.filtered_frame, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) == 0:
             print("[INFO] No contour found")
@@ -58,7 +57,8 @@ class Vision:
         if moment["m00"] != 0:
             x = int(moment["m10"] / moment["m00"])
             y = int(moment["m01"] / moment["m00"])
-            goal = np.array([x, y])
+            cv2.circle(filtered, (x, y), 5, (0, 0, 255), -1)
+            cv2.imshow("filtered", filtered)
             print("[INFO] Goal found at ({}, {})".format(x, y))
 
 

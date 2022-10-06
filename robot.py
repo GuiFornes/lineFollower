@@ -48,8 +48,11 @@ class Robot:
         self.asked_speedL = speedL * self.move_speed
         self.asked_speedR = speedR * self.move_speed
 
-    def get_speed(self):
+    def get_asked_speed(self):
         return self.asked_speedL, self.asked_speedR
+
+    def get_real_speed(self):
+        return self.odom.rot_speedL, self.odom.rot_speedR
 
     def follow_line(self, color=GREEN):
         print("[INFO] Following line ", color)
