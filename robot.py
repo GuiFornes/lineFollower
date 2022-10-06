@@ -63,7 +63,7 @@ class Robot:
 
     def __compute_target(self, color=GREEN):
         ret, goal = self.vision.update(color)  # in pixels
-        if ret:
+        if not ret:
             goal = self.odom.position + [0, 0.01], self.odom.orientation
         else:
             goal = self.odom.position + kinematics.pixel_to_robot(*goal), self.odom.orientation + math.atan2(goal[0], goal[1])
