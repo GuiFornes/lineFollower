@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 
 def rotation_matrix(alpha):
     """Return a 2D rotation matrix."""
-    return np.array([[np.cos(alpha), -np.sin(alpha)],
-                     [np.sin(alpha), np.cos(alpha)]])
+    return np.array([[np.cos(alpha), np.sin(alpha)],
+                     [-np.sin(alpha), np.cos(alpha)]])
 
 
 def circumscribed_circle(A, B, C):

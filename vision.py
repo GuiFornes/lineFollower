@@ -35,8 +35,8 @@ class Vision:
         contour = sorted(contours, key=cv2.contourArea, reverse=True)[0]
         moment = cv2.moments(contour)
         if moment["m00"] != 0:
-            x = int(moment["m10"] / moment["m00"])
-            y = int(moment["m01"] / moment["m00"])
+            y = int(moment["m10"] / moment["m00"])
+            x = int(moment["m01"] / moment["m00"])
             goal = np.array([x, y])
         return True, goal
 

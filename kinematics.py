@@ -86,7 +86,7 @@ def go_to_xya(currX, currY, currTheta, x, y, theta):
 
 def pixel_to_robot(x, y):
     """
-    This function converts the pixel coordinates to robot coordinates
+    This function converts the pixel coordinates to robot frame coordinates
     :param x: x position (pixel)
     :param y: y position (pixel)
     :return: x, y (m)

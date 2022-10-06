@@ -61,7 +61,7 @@ class Robot:
         while True:
             target = self.__compute_target(color)
             print("\n[INFO] Target: ", target)
-            left, right = kinematics.go_to_xya(0, 0, 0, *target[0], target[1])
+            left, right = kinematics.go_to_xya(*self.odom.position, self.odom.orientation, *target[0], target[1])
             print("[INFO] Left: ", left, "Right: ", right)
             self.set_speed(left, right)
             print("[INFO] Speed set: ", self.get_asked_speed())
@@ -70,12 +70,14 @@ class Robot:
     def __compute_target(self, color=GREEN):
         ret, goal = self.vision.update(color)  # in pixels
         if not ret:
-            goal = self.odom.position + [0, 0.01], self.odom.orientation
+            print("[INFO] No goal found")
+            robot_goal = np.array([0, 0.01])
+            world_goal = self.odom.position + robot_goal @ utils.rotation_matrix(self.odom.orientation), self.odom.orientation
         else:
-            goal = self.odom.position + kinematics.pixel_to_robot(*goal), self.odom.orientation + math.atan2(goal[0],
-                                                                                                             goal[1])
-            self.last_goal = goal
-        return goal  # meters, world frame
+            robot_goal = kinematics.pixel_to_robot(*goal)
+            world_goal = self.odom.position + robot_goal @ utils.rotation_matrix(self.odom.orientation), self.odom.orientation + math.atan2(robot_goal[0], robot_goal[1])
+            self.last_goal = world_goal
+        return world_goal  # meters, world frame
 
     def go_to_objective(self):
         pass
@@ -87,7 +89,7 @@ class Robot:
         t = time.time()
         while True:
             self.__communicator()
-            #print("[INFO] Position: ", self.odom.position, self.odom.orientation)
+            # print("[INFO] Position: ", self.odom.position, self.odom.orientation)
         self.non_compliant()
         print("[INFO] No more compliant")
         print("[INFO] Position: ", self.odom.position, self.odom.orientation)
