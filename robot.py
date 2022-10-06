@@ -64,8 +64,7 @@ class Robot:
             print("[INFO] Left: ", left, "Right: ", right)
             self.set_speed(left, right)
             print("[INFO] Speed set: ", self.get_real_speed())
-            # self.__communicator()
-            print("ici")
+            self.__communicator()
 
     def __compute_target(self, color=GREEN):
         ret, goal = self.vision.update(color)  # in pixels
@@ -105,31 +104,31 @@ class Robot:
 
     def __communicator(self):
         # print("[INFO] Communicator thread started")
-        while True:
-            t = time.time()
-            # Enable motors
-            """
-            print("[INFO] reading keyboard entry")
-            input_kb = str(sys.stdin.readline()).strip("\n")
-            if input_kb == "s":
-                self.compliant()
-            if input_kb == "r":
-                self.non_compliant()
-            """
-            # Send orders
-            # print("[INFO] Sending orders")
-            self.dxl_io.set_moving_speed({2: math.degrees(self.asked_speedL)})
-            self.dxl_io.set_moving_speed({5: math.degrees(-self.asked_speedR)})
 
-            # Update robot information
-            # print("[INFO] Updating robot information")
-            # print("[INFO] Reading encoders : ", self.dxl_io.get_present_speed((2, 5)))
-            speedL, speedR = self.dxl_io.get_present_speed([2, 5])
+        t = time.time()
+        # Enable motors
+        """
+        print("[INFO] reading keyboard entry")
+        input_kb = str(sys.stdin.readline()).strip("\n")
+        if input_kb == "s":
+            self.compliant()
+        if input_kb == "r":
+            self.non_compliant()
+        """
+        # Send orders
+        # print("[INFO] Sending orders")
+        self.dxl_io.set_moving_speed({2: math.degrees(self.asked_speedL)})
+        self.dxl_io.set_moving_speed({5: math.degrees(-self.asked_speedR)})
 
-            self.odom.rot_speedL = math.radians(speedL)
-            self.odom.rot_speedR = math.radians(-speedR)
-            self.odom.update(time.time() - t)
-            time.sleep(0.1)
+        # Update robot information
+        # print("[INFO] Updating robot information")
+        # print("[INFO] Reading encoders : ", self.dxl_io.get_present_speed((2, 5)))
+        speedL, speedR = self.dxl_io.get_present_speed([2, 5])
+
+        self.odom.rot_speedL = math.radians(speedL)
+        self.odom.rot_speedR = math.radians(-speedR)
+        self.odom.update(time.time() - t)
+        time.sleep(0.1)
 
 
 if __name__ == "__main__":
