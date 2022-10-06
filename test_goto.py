@@ -13,6 +13,7 @@ try:
     speedL, speedR = kin.go_to_xya(*firstBot.odom.position, firstBot.odom.orientation, 0.1, 0 , 0)
     print(f"speedL:{speedL} , speedR:{speedR}")
     firstBot.set_speed(speedL, speedR)
+    print(firstBot.get_asked_speed())
     firstBot.communicator()
 except KeyboardInterrupt:
     print("[INFO] Stopping robot, bye bye")
