@@ -13,8 +13,6 @@ def direct_kinematics(rotSpeedL, rotSpeedR):
     speedL, speedR = rotSpeedL * RADIUS, rotSpeedR * RADIUS
     if speedL == speedR:
         return speedL, 0
-    elif speedL == -speedR:
-        return 0, speedL / L
     else:
         return (speedL + speedR) / 2, (speedR - speedL) / L
 
@@ -27,14 +25,14 @@ def odom(linear, angular, t):
     :param t: time (s)
     :return: dx, dy, dtheta (m, m, rad)
     """
-    print(f"lin, ang : {linear:.5f}, {angular:.5f}")
+    # print(f"lin, ang : {linear:.5f}, {angular:.5f}")
     if angular == 0:
         dx, dy, dtheta = 0, linear * t, 0
     else:
         dx = (linear / angular) * np.sin(angular * t)
         dy = (linear / angular) * (np.cos(angular * t) - 1)
         dtheta = angular * t
-    print(f"vitesse : {(dy/t)*100:.1f}")
+    # print(f"vitesse : {(dy/t)*100:.1f}")
     return dx, dy, dtheta
 
 
