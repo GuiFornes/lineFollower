@@ -28,11 +28,12 @@ def odom(linear, angular, t):
     :return: dx, dy, dtheta (m, m, rad)
     """
     if angular == 0:
-        return 0, linear * t, 0
-    dx = (linear / angular) * np.sin(angular * t)
-    dy = (linear / angular) * (np.cos(angular * t) - 1)
-    dtheta = angular * t
-    print(f"vitesse : {(dx/t)*100:.1f}")
+        dx, dy, dtheta = 0, linear * t, 0
+    else:
+        dx = (linear / angular) * np.sin(angular * t)
+        dy = (linear / angular) * (np.cos(angular * t) - 1)
+        dtheta = angular * t
+    print(f"vitesse : {(dy/t)*100:.1f}")
     return dx, dy, dtheta
 
 
