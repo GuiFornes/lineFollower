@@ -82,8 +82,8 @@ class Robot:
         correction = self.kp * error + self.Kd * (error - self.previous_error) / (time.time() - self.tmp_prev)
         self.previous_error = error
         self.tmp_prev = time.time()
-        left_instruction = self.move_speed + correction
-        right_instruction = self.move_speed - correction
+        left_instruction = self.move_speed + math.radians(correction)
+        right_instruction = self.move_speed - math.radians(correction)
         if left_instruction > 2*np.pi:
             right_instruction = right_instruction - (left_instruction - 2*np.pi)
             left_instruction = 2*np.pi
