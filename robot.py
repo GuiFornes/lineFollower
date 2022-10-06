@@ -84,18 +84,18 @@ class Robot:
         self.tmp_prev = time.time()
         left_instruction = self.move_speed + correction
         right_instruction = self.move_speed - correction
-        if left_instruction > 720:
-            right_instruction = right_instruction - (left_instruction - 720)
-            left_instruction = 720
-        elif left_instruction < -720:
-            right_instruction = right_instruction + (-720 - left_instruction)
-            left_instruction = -720
-        if right_instruction > 720:
-            left_instruction = left_instruction - (right_instruction - 720)
-            right_instruction = 720
-        elif right_instruction < -720:
-            left_instruction = left_instruction + (-720 - right_instruction)
-            right_instruction = -720
+        if left_instruction > 10:
+            right_instruction = right_instruction - (left_instruction - 10)
+            left_instruction = 10
+        elif left_instruction < -10:
+            right_instruction = right_instruction + (-10 - left_instruction)
+            left_instruction = -10
+        if right_instruction > 10:
+            left_instruction = left_instruction - (right_instruction - 10)
+            right_instruction = 10
+        elif right_instruction < -10:
+            left_instruction = left_instruction + (-10 - right_instruction)
+            right_instruction = -10
         return left_instruction, right_instruction
 
     def go_to_objective(self):
