@@ -27,6 +27,7 @@ def odom(linear, angular, t):
     :param t: time (s)
     :return: dx, dy, dtheta (m, m, rad)
     """
+    print(f"lin, ang : {linear:.5f}, {angular:.5f}")
     if angular == 0:
         dx, dy, dtheta = 0, linear * t, 0
     else:
