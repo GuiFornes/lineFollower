@@ -81,10 +81,10 @@ class Robot:
 
     def where_did_i_go(self):
         print("\n[INFO] Position: ", self.odom.position, self.odom.orientation)
-        print("[INFO] Now compliant for 5 seconds: ", )
+        print("[INFO] Now compliant for infini seconds: ", )
         self.compliant()
         t = time.time()
-        while time.time()-t < 5:
+        while True:
             self.__communicator()
             #print("[INFO] Position: ", self.odom.position, self.odom.orientation)
         self.non_compliant()
