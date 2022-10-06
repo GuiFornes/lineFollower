@@ -14,7 +14,7 @@ def direct_kinematics(rotSpeedL, rotSpeedR):
     if speedL == speedR:
         return speedL, 0
     else:
-        return (speedL + speedR) / 2, (speedR - speedL) / L
+        return (speedL + speedR) / 2, 20 * (speedR - speedL) / L
 
 
 def odom(linear, angular, t):
