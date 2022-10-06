@@ -86,7 +86,7 @@ class Robot:
         t = time.time()
         while time.time()-t < 5:
             self.__communicator()
-            print("[INFO] Position: ", self.odom.position, self.odom.orientation)
+            #print("[INFO] Position: ", self.odom.position, self.odom.orientation)
         self.non_compliant()
         print("[INFO] No more compliant")
         print("[INFO] Position: ", self.odom.position, self.odom.orientation)
