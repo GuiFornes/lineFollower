@@ -68,8 +68,8 @@ class Robot:
         self.non_compliant()
         print("[INFO] Following line ", color)
         while True:
-            ret, goal = self.vision.update(color)
-            if not ret:
+            goal = self.vision.detect(color)
+            if goal[0] == 0 and goal[1] == 0:
                 left, right = 2, 2
             else:
                 left, right = self.__pid(*goal)

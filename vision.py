@@ -44,6 +44,41 @@ class Vision:
             goal = np.array([x, y])
         return True, goal
 
+    def detect(self, color=GREEN):
+        """
+        Main function for camera treatment, from a video stream it detects the maximum area of the color passed in parameter
+        :param color: colour you want to detect
+        """
+        c_x = 0
+        c_y = 0
+        if self.cam.isOpened():
+            ret, img = self.cam.read()
+            img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+            low_color = np.array([57, 70, 79])
+            high_color = np.array([83, 255, 255])
+            thresh = cv2.inRange(img_hsv, low_color, high_color)
+
+            # get contours and filter on area
+            contours = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            contours = contours[0] if len(contours) == 2 else contours[1]
+            # result = img.copy()
+            contour = 0
+            area_max = 0
+            c = None
+            for c in contours:
+                area = cv2.contourArea(c)
+                if area > area_max:
+                    area_max = area
+                    contour = c
+            m = None
+            if area_max > 0 and c is not None:
+                m = cv2.moments(contour)
+            if m is not None and not (m["m00"] == 0):
+                c_x = int(m["m10"] / m["m00"])
+                c_y = int(m["m01"] / m["m00"])
+        return c_x, c_y
+
     def live_cam(self):
         _, frame = self.cam.read()
         cv2.imshow("frame", frame)
