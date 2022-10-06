@@ -5,7 +5,6 @@ import pypot.dynamixel as dm
 import time
 import sys
 import math
-from multiprocessing import Process
 
 from constants import *
 import kinematics
@@ -39,7 +38,7 @@ class Robot:
         self.last_goal = [0, 0]
 
         # Init communication thread
-        self.com_thread = Process(target=self.__communicator)
+        self.com_thread = threading.Thread(target=self.__communicator)
         self.com_thread.start()
 
     def get_location(self):
