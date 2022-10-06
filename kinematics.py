@@ -58,8 +58,8 @@ def inverse_kinematics(linear, angular):
     :param angular: angular velocity (rad/s)
     :return: left wheel speed, right wheel speed (rad/s)
     """
-    speedL =  (linear - angular * L/RADIUS)
-    speedR =  (linear + angular * L/RADIUS)
+    speedL = 1 / RADIUS * (linear - angular * L)
+    speedR = 1 / RADIUS * (linear + angular * L)
     return speedL, speedR
 
 
