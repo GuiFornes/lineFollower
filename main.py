@@ -11,7 +11,7 @@ follow = True
 
 if follow:
     try:
-        firstBot.follow_line(color=GREEN)
+        firstBot.follower()
     except KeyboardInterrupt:
         print("[INFO] Stopping robot, bye bye")
     finally:

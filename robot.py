@@ -72,8 +72,10 @@ class Robot:
 
     def follow_line(self, color=GREEN):
         print("[INFO] Following line ", color)
-        while not self.vision.detect_yellow():
-            goal = self.vision.update(color)
+	t = time.time()
+        while (not self.vision.detect_yellow()) and t - time.time() > 5:
+	    t = time.time()
+	    goal = self.vision.update(color)
             if goal[0] == 0 and goal[1] == 0:
                 left, right = 2, 2
             else:

@@ -12,6 +12,8 @@ dxl_io = dm.DxlIO(ports[0])
 dxl_io.set_wheel_mode([2])
 dxl_io.set_wheel_mode([5])
 
+print("ca marche")
+
 while True:
     speedL, speedR = 0, 0
     if keyboard.is_pressed('z'):
