@@ -29,7 +29,7 @@ class Robot:
         self.odom = odometry.Odometry()
 
         # Init variables
-        self.move_speed = 500
+        self.move_speed = 10
         self.asked_speedL = 0
         self.asked_speedR = 0
         self.linear_speed = 0
@@ -44,8 +44,8 @@ class Robot:
         return self.odom.position, self.odom.orientation
 
     def set_speed(self, speedL, speedR):
-        self.asked_speedL = speedL * 500
-        self.asked_speedR = speedR * 500
+        self.asked_speedL = speedL * self.move_speed
+        self.asked_speedR = speedR * self.move_speed
 
     def get_speed(self):
         return self.asked_speedL, self.asked_speedR
@@ -63,7 +63,7 @@ class Robot:
     def __compute_target(self, color=GREEN):
         ret, goal = self.vision.update(color)  # in pixels
         if ret:
-            goal = self.odom.position + [0, 0.005], self.odom.orientation
+            goal = self.odom.position + [0, 0.01], self.odom.orientation
         else:
             goal = self.odom.position + kinematics.pixel_to_robot(*goal), self.odom.orientation + np.atan2(goal[0], goal[1])
             self.last_goal = goal
@@ -118,7 +118,7 @@ class Robot:
             self.odom.real_speedL = utils.deg_to_rad_second(speedL)
             self.odom.real_speedR = utils.deg_to_rad_second(-speedR)
             self.odom.update(time.time() - t)
-            time.sleep(0.1)
+            time.sleep(0.3)
 
 
 if __name__ == "__main__":
