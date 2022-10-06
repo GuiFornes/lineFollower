@@ -7,6 +7,8 @@ ports = dm.get_available_ports()
 if not ports:
     exit('No port')
 dxl_io = dm.DxlIO(ports[0])
+
+
 #motor_ids=dxl_io(ports[0]).scan()
 dxl_io.set_wheel_mode([5])
 dxl_io.set_wheel_mode([2]) #gauche
