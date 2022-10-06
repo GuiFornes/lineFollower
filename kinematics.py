@@ -27,8 +27,8 @@ def odom(linear, angular, t):
     :param t: time (s)
     :return: dx, dy, dtheta (m, m, rad)
     """
-    dx =( linear/angular)* np.sin(angular*t)
-    dy =( linear/angular)* (np.cos(angular*t)-1)
+    dx = (linear / angular) * np.sin(angular * t)
+    dy = (linear / angular) * (np.cos(angular * t) - 1)
     dtheta = angular * t
     return dx, dy, dtheta
 
@@ -45,7 +45,7 @@ def tick_odom(x, y, theta, linear, angular, t):
     :return: new_x, new_y, new_theta (m, m, rad)
     """
     dx, dy, dtheta = odom(linear, angular, t)
-    return x + dx*np.cos(theta)-dy*np.sin(theta), y + x+dx*np.sin(theta)+dy*np.cos(theta), theta + dtheta
+    return x + dx * np.cos(theta) - dy * np.sin(theta), y + x + dx * np.sin(theta) + dy * np.cos(theta), theta + dtheta
 
 
 def inverse_kinematics(linear, angular):
@@ -74,10 +74,10 @@ def go_to_xya(currX, currY, currTheta, x, y, theta):
     dx = x - currX
     dy = y - currY
     distance = np.sqrt(dx ** 2 + dy ** 2)
-    p1=1
-    p2=1
-    angularspeed=(theta-currTheta)*p1
-    linearspeed=distance*p2
+    p1 = 1
+    p2 = 1
+    angularspeed = (theta - currTheta) * p1
+    linearspeed = distance * p2
     return inverse_kinematics(linearspeed, angularspeed)
 
 

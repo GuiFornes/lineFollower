@@ -29,6 +29,7 @@ class Robot:
         self.odom = odometry.Odometry()
 
         # Init variables
+        self.move_speed = 500
         self.asked_speedL = 0
         self.asked_speedR = 0
         self.linear_speed = 0
@@ -43,8 +44,8 @@ class Robot:
         return self.odom.position, self.odom.orientation
 
     def set_speed(self, speedL, speedR):
-        self.asked_speedL = speedL
-        self.asked_speedR = speedR
+        self.asked_speedL = speedL * 500
+        self.asked_speedR = speedR * 500
 
     def get_speed(self):
         return self.asked_speedL, self.asked_speedR
