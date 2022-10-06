@@ -20,4 +20,7 @@ if follow:
         firstBot.compliant()
 
 else:
-    firstBot.where_did_i_go()
+    try:
+        firstBot.where_did_i_go()
+    except KeyboardInterrupt:
+        print("[INFO] Position & Angle: ", firstBot.odom.position, firstBot.odom.orientation)
