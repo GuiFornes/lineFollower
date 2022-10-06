@@ -11,11 +11,14 @@ print("[INFO] FirstBot is ready to go")
 follow = False
 
 if follow:
+    t_robot = time.time()
     try:
         firstBot.follow_line(color=GREEN)
     except KeyboardInterrupt:
         print("[INFO] Stopping robot, bye bye")
     finally:
+        print("time robot = ", time.time()-t_robot)
+        print("time_thread = ", firstBot.time_thread)
         firstBot.set_speed(0, 0)
         firstBot.compliant()
 
