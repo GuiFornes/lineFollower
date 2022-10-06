@@ -32,7 +32,7 @@ def odom(linear, angular, t):
     dx = (linear / angular) * np.sin(angular * t)
     dy = (linear / angular) * (np.cos(angular * t) - 1)
     dtheta = angular * t
-    print(f"vitesse : {dx/t}")
+    print(f"vitesse : {(dx/t)*100:.1f}")
     return dx, dy, dtheta
 
 
@@ -48,7 +48,7 @@ def tick_odom(x, y, theta, linear, angular, t):
     :return: new_x, new_y, new_theta (m, m, rad)
     """
     dx, dy, dtheta = odom(linear, angular, t)
-    print("dx, dy, dtheta: ", dx, dy, dtheta)
+    #print("dx, dy, dtheta: ", dx, dy, dtheta)
     return x + dy * np.cos(theta) - dx * np.sin(theta), y + dy * np.sin(theta) + dx * np.cos(theta), theta + dtheta
 
 
