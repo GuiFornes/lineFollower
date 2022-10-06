@@ -110,13 +110,13 @@ class Robot:
                 self.non_compliant()
             """
             # Send orders
-            print("[INFO] Sending orders")
+            # print("[INFO] Sending orders")
             self.dxl_io.set_moving_speed({2: utils.rad_to_deg_second(self.asked_speedL)})
             self.dxl_io.set_moving_speed({5: utils.rad_to_deg_second(-self.asked_speedR)})
 
             # Update robot information
-            print("[INFO] Updating robot information")
-            print("[INFO] Reading encoders : ", self.dxl_io.get_present_speed((2,)))
+            # print("[INFO] Updating robot information")
+            # print("[INFO] Reading encoders : ", self.dxl_io.get_present_speed((2,)))
             speedL, speedR = self.dxl_io.get_present_speed([2, 5])
 
             self.odom.real_speedL = utils.deg_to_rad_second(speedL)
