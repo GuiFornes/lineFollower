@@ -91,10 +91,10 @@ class Robot:
         pass
 
     def non_compliant(self):
-        self.dxl_io.disable_torque([2, 5])
+        self.dxl_io.enable_torque([2, 5])
 
     def compliant(self):
-        self.dxl_io.enable_torque([2, 5])
+        self.dxl_io.disable_torque([2, 5])
 
     def __communicator(self):
         print("[INFO] Communicator thread started")
