@@ -126,7 +126,6 @@ class Robot:
 
             self.odom.rot_speedL = math.radians(speedL)
             self.odom.rot_speedR = math.radians(-speedR)
-            self.time_thread += time.time() - t
             self.odom.update(time.time() - t)
             time.sleep(0.1)
 
