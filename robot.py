@@ -30,7 +30,7 @@ class Robot:
         self.odom = odometry.Odometry()
 
         # Init variables
-        self.move_speed = 10
+        self.move_speed = 1
         self.asked_speedL = 0
         self.asked_speedR = 0
         self.linear_speed = 0
