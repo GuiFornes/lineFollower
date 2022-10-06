@@ -40,7 +40,7 @@ class Robot:
         # Init PID
         self.previous_error = 0
         self.tmp_prev = time.time()
-        self.kp = 0
+        self.kp = 0.1
         self.Kd = 0
         self.kpa = 1
         self.kpd = 300
