@@ -35,14 +35,15 @@ class Vision:
         if len(contours) == 0:
             return False, goal
         contour = sorted(contours, key=cv2.contourArea, reverse=True)[0]
-        if cv2.contourArea(contour) < 1000:
+        if cv2.contourArea(contour) < 10000:
             return False, goal
         moment = cv2.moments(contour)
         if moment["m00"] != 0:
             y = int(moment["m10"] / moment["m00"])
             x = int(moment["m01"] / moment["m00"])
             goal = np.array([x, y])
-        return True, goal
+            return True, goal
+        return False, goal
 
     def detect_yellow(self):
         frame = self.frame
@@ -50,7 +51,7 @@ class Vision:
         if len(contours) == 0:
             return False
         contour = sorted(contours, key=cv2.contourArea, reverse=True)[0]
-        if cv2.contourArea(contour) < 1000:
+        if cv2.contourArea(contour) < 10000 and cv2.moments(contour)["m00"] == 0:
             return False
         return True
 
@@ -82,8 +83,11 @@ class Vision:
 if __name__ == "__main__":
     vision = Vision()
     while True:
-        vision.update(color=GREEN)
+        vision.update(color=YELLOW)
         vision.disp_image()
+        yel = vision.detect_yellow()
+        if yel:
+            print("JAUNE")
         if cv2.waitKey(1) & 0xFF == ord("q"):
             cv2.destroyAllWindows()
             break
