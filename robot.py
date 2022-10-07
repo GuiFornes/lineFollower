@@ -76,6 +76,7 @@ class Robot:
         while (not self.vision.detect_yellow()) or time.time() - t < 5:
             t = time.time()
             ret, goal = self.vision.update(color)
+            print("Goal : ", goal)
             if not ret:
                 left, right = self.move_speed, self.move_speed
             else:
