@@ -7,7 +7,7 @@ print("[INFO] Connecting to motors ...")
 firstBot = Robot()
 print("[INFO] FirstBot is ready to go")
 
-follow = True
+follow = False
 
 if follow:
     try:
