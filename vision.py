@@ -38,9 +38,9 @@ class Vision:
         if cv2.contourArea(contour) < 10000:
             return False, goal
         moment = cv2.moments(contour)
-        if moment["m00"] != 0:
-            y = int(moment["m10"] / moment["m00"])
-            x = int(moment["m01"] / moment["m00"])
+        if moment["m00"] != 0 and moment is not None:
+            x = int(moment["m10"] / moment["m00"])
+            y = int(moment["m01"] / moment["m00"])
             goal = np.array([x, y])
             return True, goal
         return False, goal
@@ -83,7 +83,9 @@ class Vision:
 if __name__ == "__main__":
     vision = Vision()
     while True:
-        vision.update(color=YELLOW)
+        ret, goal = vision.update(color=GREEN)
+        print("Goal = ", goal)
+        print("Goal error : ", goal[0] - 320)
         vision.disp_image()
         yel = vision.detect_yellow()
         if yel:
