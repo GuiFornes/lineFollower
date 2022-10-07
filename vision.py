@@ -7,7 +7,7 @@ from constants import *
 class Vision:
     def __init__(self):
         try:
-            self.cam = cv2.VideoCapture(2)
+            self.cam = cv2.VideoCapture(0)
         except Exception as e:
             print("[ERROR] Camera not found")
             print(e)
