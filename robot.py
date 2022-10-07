@@ -30,7 +30,7 @@ class Robot:
         self.odom = odometry.Odometry()
 
         # Init variables
-        self.move_speed = 1.5  # rad/s
+        self.move_speed = 1  # rad/s
         self.asked_speedL = 0
         self.asked_speedR = 0
         self.linear_speed = 0
@@ -41,7 +41,7 @@ class Robot:
         self.previous_error = 0
         self.tmp_prev = time.time()
         self.kp = 0.15
-        self.Kd = 0.01
+        self.Kd = 0.02
         self.kpa = 1
         self.kpd = 300
         self.Kp_theta = 100
