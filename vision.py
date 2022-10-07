@@ -84,6 +84,7 @@ if __name__ == "__main__":
     while True:
         vision.update(color=GREEN)
         vision.disp_image()
+        print(vision.detect_yellow())
         if cv2.waitKey(1) & 0xFF == ord("q"):
             cv2.destroyAllWindows()
             break
