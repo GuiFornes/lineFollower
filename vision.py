@@ -30,20 +30,21 @@ class Vision:
         self.filtered_frame = mask
 
     def __get_objectives(self):
-        goal = np.array([0, 0])
-        contours, _ = cv2.findContours(self.filtered_frame, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
+        objectif = np.array([0, 0])
+        contours, _ = cv2.findContours(self.filtered_frame, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         if len(contours) == 0:
-            return False, goal
+            return False, objectif
         contour = sorted(contours, key=cv2.contourArea, reverse=True)[0]
         if cv2.contourArea(contour) < 10000:
-            return False, goal
+            return False, objectif
         moment = cv2.moments(contour)
         if moment["m00"] != 0 and moment is not None:
             x = int(moment["m10"] / moment["m00"])
             y = int(moment["m01"] / moment["m00"])
-            goal = np.array([x, y])
-            return True, goal
-        return False, goal
+            objectif = np.array([x, y])
+            print("[INFO] Goal found at ({}, {})".format(x, y))
+            return True, objectif
+        return False, objectif
 
     def detect_yellow(self):
         frame = self.frame
