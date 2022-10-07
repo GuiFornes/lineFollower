@@ -22,6 +22,7 @@ class Vision:
 
     def __filter(self, color=GREEN):
         ret, self.frame = self.cam.read()
+        print("size", self.frame.shape)
         hsv = cv2.cvtColor(self.frame, cv2.COLOR_BGR2HSV)
         # equalize histogram
         hsv[:, :, 2] = cv2.equalizeHist(hsv[:, :, 2])
@@ -38,13 +39,47 @@ class Vision:
         if cv2.contourArea(contour) < 10000:
             return False, objectif
         moment = cv2.moments(contour)
-        if moment["m00"] != 0 and moment is not None:
+        if moment["m00"] != 0:
             x = int(moment["m10"] / moment["m00"])
             y = int(moment["m01"] / moment["m00"])
             objectif = np.array([x, y])
             print("[INFO] Goal found at ({}, {})".format(x, y))
             return True, objectif
         return False, objectif
+
+    def detect(self, color):
+        """
+        Main function for camera treatment, from a video stream it detects the maximum area of the color passed in parameter
+        :param color: colour you want to detect
+        """
+        c_x = 0
+        c_y = 0
+        if self.cam.isOpened():
+            ret, img = self.cam.read()
+            img_hsv = cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
+
+            thresh = cv2.inRange(img_hsv, COLOR_BOUND[color][0], COLOR_BOUND[color][1])
+
+            # get contours and filter on area
+            contours = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+            contours = contours[0] if len(contours) == 2 else contours[1]
+            # result = img.copy()
+            contour = 0
+            area_max = 0
+            c = None
+            for c in contours:
+                area = cv2.contourArea(c)
+                if area > area_max:
+                    area_max = area
+                    contour = c
+            m = None
+            if area_max > 0 and c is not None:
+                m = cv2.moments(contour)
+            if m is not None and not (m["m00"] == 0):
+                c_x = int(m["m10"] / m["m00"])
+                c_y = int(m["m01"] / m["m00"])
+                return True, (c_x, c_y)
+        return False, (c_x, c_y)
 
     def detect_yellow(self):
         frame = self.frame
