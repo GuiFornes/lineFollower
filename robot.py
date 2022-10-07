@@ -77,7 +77,7 @@ class Robot:
             t = time.time()
             ret, goal = self.vision.update(color)
             if not ret:
-                left, right = 2, 2
+                left, right = self.move_speed, self.move_speed
             else:
                 left, right = self.__pid(*goal)
             self.set_speed(left, right)
@@ -86,6 +86,7 @@ class Robot:
 
     def __pid(self, x, y):
         error = x - 320  # middle of the img
+        print("error : ", error)
         correction = self.kp * error + self.Kd * (error - self.previous_error) / (time.time() - self.tmp_prev)
         self.previous_error = error
         self.tmp_prev = time.time()
